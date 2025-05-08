@@ -70,5 +70,45 @@
 
     # 6. Código-fonte.
 
-import pytube
-print(pytube.__version__)
+import pandas as pd
+from youtube_transcript_api import YouTubeTranscriptApi
+import re
+
+
+def obter_transcricao(video_id, idiomas=['pt', 'en']):
+    for idioma in idiomas:
+        try:
+            transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=[idioma])
+            texto = " ".join([re.sub(r'[.*?\\]', '', entry['text']) for entry in transcript])
+            return " ".join(texto.split())  
+        except Exception:
+            continue 
+    return None 
+
+videos_escolhidos = ['OEg7DsudmMo', 'cY08Z_POkkk', 'yYMOqgu-x60', 'XGclzdIl1l',
+             'LOBEbDa8nV&t=5s', 'VcM4IKJTg70', 'cTRnZPGxrUg', 'Kxmeo',
+             'h8UTXijOTgA', 'o00cZUhw720', 'Oo_7yuGlvwg', 'ABAq7J5',
+             'WpewQxkjkkQ&t=21s', 'GhYbk_S7OKA', 'El-bpOP-AgI&t',
+             '6ujPifmXCTU', '3yr2DuszbMo', 'yQblgGXQ27o', 'h',
+             'HtzVP-cgazQ', '@k80jMCk6LU'] 
+
+
+
+dados = []
+ids_de_videos_nao_transcritos = []
+
+for vid in videos_escolhidos:
+    trans = obter_transcricao(vid)
+    if trans:
+        dados.append({"video_id": vid, "transcricao": trans})
+    else:
+        ids_de_videos_nao_transcritos.append(vid)
+
+
+print("Transcricoes coletadas:", len(dados))
+print("IDs nao transcritos:", ids_de_videos_nao_transcritos)
+
+
+df = pd.DataFrame(dados)
+df.to_csv("transcricoes.csv", index=False)
+
