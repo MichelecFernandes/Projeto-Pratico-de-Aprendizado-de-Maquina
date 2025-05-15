@@ -130,8 +130,11 @@ def trasncricoesEmNumeroSentenceTransformer():
     # 1. Como foi feita a coleta dos vídeos e as transcrições.
     #   R: Vídeos: A coleta dos videos foram feitas atraves de buscas no youtube mesmo, procurando videos curtos que tinham máximo 10 minutos de duração.
     #      Transcrições: para gerar as transcrições utilizamos a biblioteca YouTubeTranscriptApi para ajudar a obter as legendas disponiveis no video e o idioma. Com ela, fizemos uma função responsavel por ler as descrições e armazenar em um arquivo csv.
+
     # 2. Comparação das três técnicas (BoW, Embeddings) e os resultados obtidos.
-    
+    #   R: Matriz BoW: (44, 5886) -> (n_transcricoes, n_palavras_no_vocabulario)
+    #      Shape dos embeddings: (44, 384) -> (n_transcricoes, dimensão_do_embedding)
+
     # 3. Lista dos 10 grupos e os títulos dos vídeos em cada um. (CSV)
     
     # 4. É possível rotular os 10 grupos? Rotule os grupos na lista que será entregue.(exemplo: tecnologia, ciência, esportes, entretenimento, etc.).
