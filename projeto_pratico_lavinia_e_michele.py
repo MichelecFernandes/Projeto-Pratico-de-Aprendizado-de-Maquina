@@ -74,7 +74,7 @@ def gerarTrancricoes():
     # • CountVectorizer para BoW
     # • SentenceTransformer para embeddings
 
-def transcricoesEmNumero():
+def transcricoesEmNumeroCountVectorizer():
     # • CountVectorizer para BoW
     dataframe_dados = pd.read_csv('transcricoes.csv')  # arquivo gerado no Passo 1
 
@@ -85,7 +85,21 @@ def transcricoesEmNumero():
     vetorizador = CountVectorizer(stop_words='english')  # pode usar stop_words='portuguese' se quiser
     matriz_de_contagem_vetorizado = vetorizador.fit_transform(textos)
 
-    print(f"Matriz BoW: {matriz_de_contagem_vetorizado.shape} -> (n_transcricoes, n_palavras_no_vocabulario)")  # (n_transcricoes, n_palavras_no_vocabulario)
+    print(f"Matriz BoW: {matriz_de_contagem_vetorizado.shape} -> (n_transcricoes, n_palavras_no_vocabulario)")  
+
+def trasncricoesEmNumeroSentenceTransformer():
+    # SentenceTransformer para embeddings
+    # Carregue o DataFrame das transcrições
+    dataframe = pd.read_csv('transcricoes.csv')
+    textos = dataframe['transcricao'].tolist()
+
+    # Carrega modelo pré-treinado (pode usar 'all-MiniLM-L6-v2', que é leve e rápido)
+    model = SentenceTransformer('all-MiniLM-L6-v2')
+
+    # Gera os embeddings para cada transcrição (lista de vetores)
+    embeddings = model.encode(textos, show_progress_bar=True)
+    print(f"Shape dos embeddings: {embeddings.shape} -> (n_transcricoes, dimensão_do_embedding)")
+
 
 
 # Passo 3: Aplicação do Algoritmo de Agrupamento
@@ -136,8 +150,8 @@ def menu():
     opcao = -1
     while opcao != 0:
         print("1 - Gerar transcrições")
-        print("2 - Transformar as transcrições em numeros")
-        print("")
+        print("2 - Transformar as transcrições em numeros (Bag of Words) - utilizando CountVectorizer")
+        print("3 - Transformar as transcrições em numeros (Embeddings) - utilizando SentenceTransformer")
         print("")
         print("")
         print("")
@@ -148,7 +162,9 @@ def menu():
         if opcao == 1:
             gerarTrancricoes()
         if opcao == 2:
-            transcricoesEmNumero()
+            transcricoesEmNumeroCountVectorizer()
+        if opcao == 3:
+            trasncricoesEmNumeroSentenceTransformer()
         elif opcao == 0:
             print("Saindo.......")
             break
