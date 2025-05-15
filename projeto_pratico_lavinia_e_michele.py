@@ -60,7 +60,7 @@
 # Vocês devem entregar um relatório contendo:
     # 1. Como foi feita a coleta dos vídeos e as transcrições.
     #   R: Vídeos: A coleta dos videos foram feitas atraves de buscas no youtube mesmo, procurando videos curtos que tinham máximo 10 minutos de duração.
-    #      Transcrições:
+    #      Transcrições: para gerar as transcrições utilizamos a biblioteca YouTubeTranscriptApi para ajudar a obter as legendas disponiveis no video e o idioma. Com ela, fizemos uma função responsavel por ler as descrições e armazenar em um arquivo csv.
     # 2. Comparação das três técnicas (BoW, Embeddings) e os resultados obtidos.
     
     # 3. Lista dos 10 grupos e os títulos dos vídeos em cada um. (CSV)
