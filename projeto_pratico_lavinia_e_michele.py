@@ -146,6 +146,14 @@ def knn_bow(representacao='bow'):
         score = silhouette_score(X_dense, kmeans.labels_)
         print(f"Silhouette Score: {score}")
 
+    resultado = pd.DataFrame({
+    'video_id': video_ids,
+    'grupo': kmeans.labels_
+    })
+
+    resultado.to_csv('clusters_bow.csv', index=False)
+    print("CSV gerado: clusters_bow.csv")
+
     # Visualização PCA
     reduzir_matriz = PCA(n_components=2)
     X_reduced = reduzir_matriz.fit_transform(X.toarray() if representacao == 'bow' else X)
