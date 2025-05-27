@@ -26,7 +26,13 @@ import re
 from sentence_transformers import SentenceTransformer
 # pip install sentence-transformers
 
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import CountVectorizer
+
+
 
 def gerarTrancricoes():
     def obter_transcricao(video_id, idiomas=['pt', 'en']):
@@ -109,8 +115,48 @@ def trasncricoesEmNumeroSentenceTransformer():
 
     # 2. Aplique o algoritmo sobre os dados transformados para gerar  o modelo.
 
+def knn_bow(representacao='bow'):
 
-#********************************************************
+    # Carregar transcrições
+    dataframe = pd.read_csv('transcricoes.csv')
+    textos = dataframe['transcricao'].tolist()
+    video_ids = dataframe['video_id'].tolist()
+
+    if representacao == 'bow':
+        print("Usando Bag of Words (CountVectorizer)")
+        vectorizer = CountVectorizer(stop_words='english')
+        X = vectorizer.fit_transform(textos)
+    else:
+        print("Usando Embeddings (SentenceTransformer)")
+        from sentence_transformers import SentenceTransformer
+        model = SentenceTransformer('all-MiniLM-L6-v2')
+        X = model.encode(textos, show_progress_bar=True)
+
+    # Aplicar K-Means
+    n_grupos = 10
+    kmeans = KMeans(n_clusters=n_grupos, random_state=42)
+    kmeans.fit(X)
+
+    # Avaliação
+    qualidade_divisao = kmeans.inertia_
+    print(f"Inertia: {qualidade_divisao}")
+
+    if X.shape[0] > n_grupos:
+        X_dense = X.toarray() if representacao == 'bow' else X
+        score = silhouette_score(X_dense, kmeans.labels_)
+        print(f"Silhouette Score: {score}")
+
+    # Visualização PCA
+    reduzir_matriz = PCA(n_components=2)
+    X_reduced = reduzir_matriz.fit_transform(X.toarray() if representacao == 'bow' else X)
+    plt.figure(figsize=(8,6))
+    plt.scatter(X_reduced[:, 0], X_reduced[:, 1], c=kmeans.labels_, cmap='tab10', s=50)
+    plt.title(f"Clusters de vídeos (K-Means) - {representacao}")
+    plt.xlabel("Componente 1")
+    plt.ylabel("Componente 2")
+    plt.colorbar(label='Cluster')
+    plt.show()
+
 
 # Passo 4: Análise dos Resultados
 # Depois de realizar o agrupamento, vocês devem analisar os grupos e verificar se fazem sentido.
@@ -155,11 +201,11 @@ def menu():
         print("1 - Gerar transcrições")
         print("2 - Transformar as transcrições em numeros (Bag of Words) - utilizando CountVectorizer")
         print("3 - Transformar as transcrições em numeros (Embeddings) - utilizando SentenceTransformer")
+        print("4 - Knn - Bow")
+        print("5 - Knn - Embe")
         print("")
         print("")
-        print("")
-        print("")
-        print("")
+        print("0 - Sair")
         opcao = int(input("Digite uma opção: "))
  
         if opcao == 1:
@@ -168,6 +214,10 @@ def menu():
             transcricoesEmNumeroCountVectorizer()
         if opcao == 3:
             trasncricoesEmNumeroSentenceTransformer()
+        if opcao == 4:
+            knn_bow()
+        if opcao == 5:
+            knn_embe()
         elif opcao == 0:
             print("Saindo.......")
             break
