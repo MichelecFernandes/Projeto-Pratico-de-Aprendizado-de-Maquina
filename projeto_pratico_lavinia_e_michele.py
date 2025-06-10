@@ -15,19 +15,18 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 # Lista de IDs de vídeos escolhidos
-VIDEOS_ESCOLHIDOS = [
-    'Y_befLlahys', '5Br-Z4Y3b-U', '9aI5v1cexWc', 'z2oF6Itzzyo', 'Uf-jBQB3aj0',
-    'i5Z9RKAB384', '5tNRcuzc4YU', 'PMs7KDyRo6Y', 'YZldtLXNfu8', 'E_OWENsOl5g',
-    '2d0waLuCjzI', 'hPe7bA2s8XI', 'wbVPvVIepXw', 'IEPemH_lwLM', 'uAPy2sl-h7o',
-    '1Yv28pSrmFw', 'dxX5HnH_tLA', '7XgfPGomGds', 'F_dUx77uwuc', 'posTc56basM',
-    'vl4Z7F_NLxs', 'Nykwb2UNqvU', 'arJVNwjhmRY', 'suxIV1zNt9A', 'UlY2deWLyw0',
-    '21mDekTZwsw', 'qVHPy7Np9rE', 'kEdaRdDkEiA', 'V3NMxTkR6n4', 'aw9lP3WAl2o',
-    'tRcr4vtV-4o', 'CANYM34cIuQ', 'TUy6SC2MRig', '2fcxZTyaREk', 'eJjbzckuDPE',
-    'Tl9uyOqRdJ8', 'S01TrpEO148', 'uV0R0f1sy4Q', 'gj9R3nmB67Q', 'FWhFp4471k8',
-    'WRlfwBof66s', 'pbb0jzXt_xA', 'MZgbd7bjCTk', 'jizAto4-ofs', 'y-_Ly5Tqggc',
-    'ZtgcWbcIWy4', 'eSrObbUHbTQ', 'hO_tjm9i32g', 'ZWYheuFOq_g', 'b-gniXXBXD0'
-]
+VIDEOS_ESCOLHIDOS = ['jz_As_nzSUA','U4VlAKE_fMg','J7IysernjcQ', 'TUy6SC2MRig',
+                         'Xeugx_L24V0', 'eMzxhNRQV4A', 'ZPmkNvM5yMQ', 'cUNI6-3aYzg',
+                         'AMmh1siH4mY', 'pbb0jzXt_xA', 'CANYM34cIuQ', '2d0waLuCjzI', 'PMs7KDyRo6Y', 'YZldtLXNfu8', '5tNRcuzc4YU',
+                         'Xnp8g_DrKmM', 'cnZs8nAkdrg', 'aw9lP3WAl2o', '2fcxZTyaREk', 'posTc56basM', 'arJVNwjhmRY', 'z2oF6Itzzyo',
+                         'nK_h08KTYlo', 'Qs35xCxWwVI', 'jizAto4-ofs', 'Y_befLlahys', 'gj9R3nmB67Q', 'N7UYvWskkcc', 'wW6OACofjRM',
+                         'qUWs5sZE4xc', 'V3NMxTkR6n4', '0YpxVIvQ-lU', '6QOkLu4kOOI', 
+                         'nTmWFWWbzkQ', '-UmOPQRpRIE', 'XSHXOEoB8jk',
+                         'GgmlGTFrD3g', 'MGALB4b3O5I', 'N4AfqCBYHGo', 'xucKeCMFeWM', 'H3Mc4126A2s',
+                         'IEPemH_lwLM', 'uAPy2sl-h7o', 'DA6AbROn9Fo', 'wbVPvVIepXw',
+                         'y-_Ly5Tqggc', 'eSrObbUHbTQ', 'ZWYheuFOq_g', 'hO_tjm9i32g', 'UlY2deWLyw0', 'qVHPy7Np9rE'            
 
+    ] 
 # DataFrame global para armazenar os títulos para fácil acesso
 df_titulos = pd.DataFrame()
 
@@ -46,22 +45,18 @@ def gerarTrancricoes():
                 continue
         return None
 
-    videos_escolhidos = ['Y_befLlahys', '5Br-Z4Y3b-U', '9aI5v1cexWc', 'z2oF6Itzzyo', 'Uf-jBQB3aj0', 'i5Z9RKAB384', '5tNRcuzc4YU', 'PMs7KDyRo6Y', 'YZldtLXNfu8', 'E_OWENsOl5g',
-                        '2d0waLuCjzI', 'hPe7bA2s8XI', 'wbVPvVIepXw', 'IEPemH_lwLM', 'uAPy2sl-h7o', '1Yv28pSrmFw', 'dxX5HnH_tLA', '7XgfPGomGds', 'F_dUx77uwuc', 'posTc56basM',
-                        'vl4Z7F_NLxs', 'Nykwb2UNqvU', 'arJVNwjhmRY', 'suxIV1zNt9A', 'UlY2deWLyw0', '21mDekTZwsw', 'qVHPy7Np9rE', 'kEdaRdDkEiA', 'V3NMxTkR6n4', 'aw9lP3WAl2o',
-                        'tRcr4vtV-4o', 'CANYM34cIuQ', 'TUy6SC2MRig', '2fcxZTyaREk', 'eJjbzckuDPE', 'Tl9uyOqRdJ8', 'S01TrpEO148', 'uV0R0f1sy4Q', 'gj9R3nmB67Q', 'FWhFp4471k8',
-                        'WRlfwBof66s', 'pbb0jzXt_xA', 'MZgbd7bjCTk', 'jizAto4-ofs', 'y-_Ly5Tqggc', 'ZtgcWbcIWy4', 'eSrObbUHbTQ', 'hO_tjm9i32g', 'ZWYheuFOq_g', 'b-gniXXBXD0',
-                        'xucKeCMFeWM', '5Br-Z4Y3b-U', 'IZPdZTrqC9M', 'CcSIvhDlYWw', 'iltgpM4wHeY', 'i5Z9RKAB384', '5tNRcuzc4YU', 'PMs7KDyRo6Y', 'YZldtLXNfu8', 'E_OWENsOl5g',
-                     '2d0waLuCjzI', 'bbjCTfFHeYg', 'wbVPvVIepXw', 'IEPemH_lwLM', 'uAPy2sl-h7o', 'xeFgFj_ZbHs', '7B9deIA6JPY', 'CwzjlmBLfrQ', 'GJc4Ir78KdE', 'posTc56basM',
-                     'vl4Z7F_NLxs', 'gV691I3iPH8', 'PQmVfC3pD7w', 'suxIV1zNt9A', 'UlY2deWLyw0', '21mDekTZwsw', 'qVHPy7Np9rE', '7Iakje0cIQU', 'V3NMxTkR6n4', 'aw9lP3WAl2o',
-                     'tRcr4vtV-4o', 'CANYM34cIuQ', 'TUy6SC2MRig', '2fcxZTyaREk', 'eJjbzckuDPE', '2n5Fy7u3qlc', 'S01TrpEO148', 'uV0R0f1sy4Q', 'gj9R3nmB67Q', 'uRkrIqa-2wE',
-                     'WRlfwBof66s', 'pbb0jzXt_xA', 'MZgbd7bjCTk', 'Ztqaa-NWYQ8', 'y-_Ly5Tqggc', 'KEiPOKUq_Rw', 'eSrObbUHbTQ', 'rd1mCZVNnxE', 'ZWYheuFOq_g', 'b-gniXXBXD0',
-                     'BzuiijVviaE', 'd1ngzIutOG8', 'jz_As_nzSUA', 'U4VlAKE_fMg', 'J7IysernjcQ', 'ys2HIo6TikA', 'Xeugx_L24V0', 'KgzfVVop2UA', 'ZPmkNvM5yMQ', 'cUNI6-3aYzg',
-                      'AMmh1siH4mY', 'MCaa6jnOcy8', 'yNW-QuMqTw', 'nJru0cQDDPA', 'zW-tfHKbdE', 'Z8Z8Orj3Fjw', 'Xnp8g_DrKmM', '0z0cVKzQ1SI', 'cnZs8nAkdrg', 'sFXY680T9S0',
-                      'nK_h08KTYlo', 'usBtrsHJMwI', 'Qs35xCxWwVI', 'N7UYvWskkcc', 'wW6OACofjRM', 'tL3Vx6KTNJ0', '4EO94rIoxQ8', 'bsflOe8eRCw', 'iEcQSVsHpZg', '3aOSttbhziI',
-                      'rWJ5F7pRHK4', 'UD3uabR9aUs', 'ZsTy0KOzcmw', 'cKPcV8FR-qE', 'qUWs5sZE4xc', 'jG1jUGbN9i0', 'hYTQ7VnQ5lU', '6QOkLu4kOOI', 'QGZQemPn1IY', 'g8gIpIHqA3o',
-                      'BKrTxdKMRYk', 'tOJUNv54DIs', 'rmvvzvTv79c', 'nTmWFWWbzkQ', 'XSHXOEoB8jk', 'FII08k4-wh4', 'GgmlGTFrD3g', 'MGALB4b3O5I', 'N4AfqCBYHGo', '2li7STVTHlY',
-                      'H3Mc4126A2s', 'Nj0AN2p1coQ', 'RN7naqu3q_U', '3FllbdQgHx0', 'tsR2LQOrM1o', 'Zw9hKmPJ1EY'
+
+    videos_escolhidos = ['jz_As_nzSUA','U4VlAKE_fMg','J7IysernjcQ', 'TUy6SC2MRig',
+                         'Xeugx_L24V0', 'eMzxhNRQV4A', 'ZPmkNvM5yMQ', 'cUNI6-3aYzg',
+                         'AMmh1siH4mY', 'pbb0jzXt_xA', 'CANYM34cIuQ', '2d0waLuCjzI', 'PMs7KDyRo6Y', 'YZldtLXNfu8', '5tNRcuzc4YU',
+                         'Xnp8g_DrKmM', 'cnZs8nAkdrg', 'aw9lP3WAl2o', '2fcxZTyaREk', 'posTc56basM', 'arJVNwjhmRY', 'z2oF6Itzzyo',
+                         'nK_h08KTYlo', 'Qs35xCxWwVI', 'jizAto4-ofs', 'Y_befLlahys', 'gj9R3nmB67Q', 'N7UYvWskkcc', 'wW6OACofjRM',
+                         'qUWs5sZE4xc', 'V3NMxTkR6n4', '0YpxVIvQ-lU', '6QOkLu4kOOI', 
+                         'nTmWFWWbzkQ', '-UmOPQRpRIE', 'XSHXOEoB8jk',
+                         'GgmlGTFrD3g', 'MGALB4b3O5I', 'N4AfqCBYHGo', 'xucKeCMFeWM', 'H3Mc4126A2s',
+                         'IEPemH_lwLM', 'uAPy2sl-h7o', 'DA6AbROn9Fo', 'wbVPvVIepXw',
+                         'y-_Ly5Tqggc', 'eSrObbUHbTQ', 'ZWYheuFOq_g', 'hO_tjm9i32g', 'UlY2deWLyw0', 'qVHPy7Np9rE'            
+
     ] 
 
     dados = []
