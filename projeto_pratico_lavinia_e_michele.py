@@ -15,16 +15,17 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 # Lista de IDs de vídeos escolhidos
-VIDEOS_ESCOLHIDOS = ['jz_As_nzSUA','U4VlAKE_fMg','J7IysernjcQ', 'TUy6SC2MRig',
-                         'Xeugx_L24V0', 'eMzxhNRQV4A', 'ZPmkNvM5yMQ', 'cUNI6-3aYzg',
-                         'AMmh1siH4mY', 'pbb0jzXt_xA', 'CANYM34cIuQ', '2d0waLuCjzI', 'PMs7KDyRo6Y', 'YZldtLXNfu8', '5tNRcuzc4YU',
-                         'Xnp8g_DrKmM', 'cnZs8nAkdrg', 'aw9lP3WAl2o', '2fcxZTyaREk', 'posTc56basM', 'arJVNwjhmRY', 'z2oF6Itzzyo',
-                         'nK_h08KTYlo', 'Qs35xCxWwVI', 'jizAto4-ofs', 'Y_befLlahys', 'gj9R3nmB67Q', 'N7UYvWskkcc', 'wW6OACofjRM',
-                         'qUWs5sZE4xc', 'V3NMxTkR6n4', '0YpxVIvQ-lU', '6QOkLu4kOOI', 
-                         'nTmWFWWbzkQ', '-UmOPQRpRIE', 'XSHXOEoB8jk',
-                         'GgmlGTFrD3g', 'MGALB4b3O5I', 'N4AfqCBYHGo', 'xucKeCMFeWM', 'H3Mc4126A2s',
-                         'IEPemH_lwLM', 'uAPy2sl-h7o', 'DA6AbROn9Fo', 'wbVPvVIepXw',
-                         'y-_Ly5Tqggc', 'eSrObbUHbTQ', 'ZWYheuFOq_g', 'hO_tjm9i32g', 'UlY2deWLyw0', 'qVHPy7Np9rE'            
+VIDEOS_ESCOLHIDOS = [
+                    'jz_As_nzSUA','U4VlAKE_fMg','J7IysernjcQ', 'TUy6SC2MRig',
+                    'Xeugx_L24V0', 'eMzxhNRQV4A', 'ZPmkNvM5yMQ', 'cUNI6-3aYzg',
+                    'AMmh1siH4mY', 'pbb0jzXt_xA', 'CANYM34cIuQ', '2d0waLuCjzI', 'PMs7KDyRo6Y', 'YZldtLXNfu8', '5tNRcuzc4YU',
+                    'Xnp8g_DrKmM', 'cnZs8nAkdrg', 'aw9lP3WAl2o', '2fcxZTyaREk', 'posTc56basM', 'arJVNwjhmRY', 'z2oF6Itzzyo',
+                    'nK_h08KTYlo', 'Qs35xCxWwVI', 'jizAto4-ofs', 'Y_befLlahys', 'gj9R3nmB67Q', 'N7UYvWskkcc', 'wW6OACofjRM',
+                    'qUWs5sZE4xc', 'V3NMxTkR6n4', '0YpxVIvQ-lU', '6QOkLu4kOOI', 
+                    'nTmWFWWbzkQ', '-UmOPQRpRIE', 'XSHXOEoB8jk',
+                    'GgmlGTFrD3g', 'MGALB4b3O5I', 'N4AfqCBYHGo', 'xucKeCMFeWM', 'H3Mc4126A2s',
+                    'IEPemH_lwLM', 'uAPy2sl-h7o', 'DA6AbROn9Fo', 'wbVPvVIepXw',
+                    'y-_Ly5Tqggc', 'eSrObbUHbTQ', 'ZWYheuFOq_g', 'hO_tjm9i32g', 'UlY2deWLyw0', 'qVHPy7Np9rE'            
 
     ] 
 # DataFrame global para armazenar os títulos para fácil acesso
@@ -45,26 +46,12 @@ def gerarTrancricoes():
                 continue
         return None
 
-
-    videos_escolhidos = ['jz_As_nzSUA','U4VlAKE_fMg','J7IysernjcQ', 'TUy6SC2MRig',
-                         'Xeugx_L24V0', 'eMzxhNRQV4A', 'ZPmkNvM5yMQ', 'cUNI6-3aYzg',
-                         'AMmh1siH4mY', 'pbb0jzXt_xA', 'CANYM34cIuQ', '2d0waLuCjzI', 'PMs7KDyRo6Y', 'YZldtLXNfu8', '5tNRcuzc4YU',
-                         'Xnp8g_DrKmM', 'cnZs8nAkdrg', 'aw9lP3WAl2o', '2fcxZTyaREk', 'posTc56basM', 'arJVNwjhmRY', 'z2oF6Itzzyo',
-                         'nK_h08KTYlo', 'Qs35xCxWwVI', 'jizAto4-ofs', 'Y_befLlahys', 'gj9R3nmB67Q', 'N7UYvWskkcc', 'wW6OACofjRM',
-                         'qUWs5sZE4xc', 'V3NMxTkR6n4', '0YpxVIvQ-lU', '6QOkLu4kOOI', 
-                         'nTmWFWWbzkQ', '-UmOPQRpRIE', 'XSHXOEoB8jk',
-                         'GgmlGTFrD3g', 'MGALB4b3O5I', 'N4AfqCBYHGo', 'xucKeCMFeWM', 'H3Mc4126A2s',
-                         'IEPemH_lwLM', 'uAPy2sl-h7o', 'DA6AbROn9Fo', 'wbVPvVIepXw',
-                         'y-_Ly5Tqggc', 'eSrObbUHbTQ', 'ZWYheuFOq_g', 'hO_tjm9i32g', 'UlY2deWLyw0', 'qVHPy7Np9rE'            
-
-    ] 
-
     dados = []
     ids_de_videos_nao_transcritos = []
 
     print("Iniciando coleta de transcrições...")
     for i, vid in enumerate(VIDEOS_ESCOLHIDOS):
-        print(f"Coletando transcrição para vídeo {i+1}/{len(VIDEOS_ESCOLHIDOS)}: {vid}")
+        print(f"Coletando transcrição para vídeo {i+1}/{(len(VIDEOS_ESCOLHIDOS) - 1)}: {vid}")
         trans = obter_transcricao(vid)
         if trans:
             dados.append({"video_id": vid, "transcricao": trans})
@@ -229,8 +216,12 @@ def obter_titulos_videos():
     global df_titulos
     print("\nIniciando coleta de títulos de vídeos do YouTube (pode demorar um pouco)...")
     options = Options()
-    options.add_argument('--headless')  # Rodar em modo invisível (sem abrir janela do navegador)
-    options.add_argument('--log-level=3') # Suprimir logs do WebDriver
+    options.add_argument('--headless') 
+    options.add_argument('--no-sandbox') 
+    options.add_argument('--disable-dev-shm-usage') 
+    options.add_argument('--disable-gpu') 
+    options.add_argument('--log-level=3') 
+    options.add_argument('--mute-audio')
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
     try:
@@ -247,7 +238,7 @@ def obter_titulos_videos():
         writer.writerow(['video_id', 'title'])
 
         for i, video_id in enumerate(video_ids_to_fetch):
-            url = f'https://www.youtube.com/watch?v={video_id}' # URL correta do YouTube
+            url = f'https://www.youtube.com/watch?v={video_id}'
             try:
                 driver.get(url)
                 time.sleep(3)  # Espera para garantir que o título carregue
