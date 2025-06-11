@@ -15,7 +15,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 # Lista de IDs de vídeos escolhidos
-VIDEOS_ESCOLHIDOS = [
+videos_escolhidos = [
                     'jz_As_nzSUA','U4VlAKE_fMg','J7IysernjcQ', 'TUy6SC2MRig',
                     'Xeugx_L24V0', 'eMzxhNRQV4A', 'ZPmkNvM5yMQ', 'cUNI6-3aYzg',
                     'AMmh1siH4mY', 'pbb0jzXt_xA', 'CANYM34cIuQ', '2d0waLuCjzI', 'PMs7KDyRo6Y', 'YZldtLXNfu8', '5tNRcuzc4YU',
@@ -28,14 +28,12 @@ VIDEOS_ESCOLHIDOS = [
                     'y-_Ly5Tqggc', 'eSrObbUHbTQ', 'ZWYheuFOq_g', 'hO_tjm9i32g', 'UlY2deWLyw0', 'qVHPy7Np9rE'            
 
     ] 
-# DataFrame global para armazenar os títulos para fácil acesso
+
 df_titulos = pd.DataFrame()
 
 
 def gerarTrancricoes():
-    """
-    Coleta as transcrições dos vídeos do YouTube e as salva em um arquivo CSV.
-    """
+     #Coleta as transcrições dos vídeos do YouTube e as salva em um arquivo CSV.
     def obter_transcricao(video_id, idiomas=['pt', 'en']):
         for idioma in idiomas:
             try:
@@ -50,8 +48,8 @@ def gerarTrancricoes():
     ids_de_videos_nao_transcritos = []
 
     print("Iniciando coleta de transcrições...")
-    for i, vid in enumerate(VIDEOS_ESCOLHIDOS):
-        print(f"Coletando transcrição para vídeo {i+1}/{(len(VIDEOS_ESCOLHIDOS) - 1)}: {vid}")
+    for i, vid in enumerate(videos_escolhidos):
+        print(f"Coletando transcrição para vídeo {i+1}/{(len(videos_escolhidos) - 1)}: {vid}")
         trans = obter_transcricao(vid)
         if trans:
             dados.append({"video_id": vid, "transcricao": trans})
@@ -75,7 +73,7 @@ def transcricoesEmNumeroCountVectorizer():
     try:
         dataframe_dados = pd.read_csv('transcricoes.csv')
         textos = dataframe_dados['transcricao'].tolist()
-        vetorizador = CountVectorizer(stop_words='english') # Você pode usar 'portuguese' se preferir
+        vetorizador = CountVectorizer(stop_words='english')
         matriz_de_contagem_vetorizado = vetorizador.fit_transform(textos)
         print(f"Matriz BoW: {matriz_de_contagem_vetorizado.shape} -> (n_transcricoes, n_palavras_no_vocabulario)")
     except FileNotFoundError:
@@ -95,7 +93,7 @@ def trasncricoesEmNumeroSentenceTransformer():
         print("Carregando modelo SentenceTransformer 'all-MiniLM-L6-v2'...")
         model = SentenceTransformer('all-MiniLM-L6-v2')
         embeddings = model.encode(textos, show_progress_bar=True)
-        print(f"Shape dos embeddings: {embeddings.shape} -> (n_transcricoes, dimensão_do_embedding)")
+        print(f"Resultado dos embeddings: {embeddings.shape} -> (n_transcricoes, dimensão_do_embedding)")
     except FileNotFoundError:
         print("Erro: 'transcricoes.csv' não encontrado. Por favor, execute a opção 1 primeiro.")
     except Exception as e:
@@ -105,7 +103,7 @@ def trasncricoesEmNumeroSentenceTransformer():
 def knn_bow():
     """
     Aplica o algoritmo K-Means aos dados representados por Bag of Words (BoW).
-    Salva os resultados em 'clusters_bow.csv' e exibe um gráfico PCA.
+    Salva os resultados em 'agrupamento_bow.csv' e exibe um gráfico PCA.
     """
     try:
         dataframe = pd.read_csv('transcricoes.csv')
@@ -117,7 +115,7 @@ def knn_bow():
         X = vectorizer.fit_transform(textos)
 
         n_grupos = 10
-        print(f"Aplicando K-Means com {n_grupos} clusters...")
+        print(f"Aplicando K-Means com {n_grupos} grupos...")
         kmeans = KMeans(n_clusters=n_grupos, random_state=42, n_init=10)
         kmeans.fit(X)
 
@@ -133,18 +131,18 @@ def knn_bow():
             'video_id': video_ids,
             'grupo': kmeans.labels_
         })
-        resultado.to_csv('clusters_bow.csv', index=False)
-        print("CSV de clusters gerado: 'clusters_bow.csv'.")
+        resultado.to_csv('agrupamento_bow.csv', index=False)
+        print("CSV de grupos gerado: 'agrupamento_bow.csv'.")
 
-        # Visualização PCA
+        # Visualização Grafico
         reduzir_matriz = PCA(n_components=2)
         X_reduced = reduzir_matriz.fit_transform(X.toarray())
         plt.figure(figsize=(10, 8))
         plt.scatter(X_reduced[:, 0], X_reduced[:, 1], c=kmeans.labels_, cmap='tab10', s=50, alpha=0.7)
-        plt.title(f"Clusters de Vídeos (K-Means) - Bag of Words")
+        plt.title(f"Agrupamento de Vídeos (K-Means) - Bag of Words")
         plt.xlabel("Componente Principal 1")
         plt.ylabel("Componente Principal 2")
-        plt.colorbar(label='Cluster')
+        plt.colorbar(label='Grupos')
         plt.grid(True, linestyle='--', alpha=0.6)
         plt.tight_layout()
         plt.show()
@@ -158,7 +156,7 @@ def knn_bow():
 def knn_embe():
     """
     Aplica o algoritmo K-Means aos dados representados por Embeddings.
-    Salva os resultados em 'clusters_embeddings.csv' e exibe um gráfico PCA.
+    Salva os resultados em 'agrupamento_embeddings.csv' e exibe um gráfico PCA.
     """
     try:
         dataframe = pd.read_csv('transcricoes.csv')
@@ -171,7 +169,7 @@ def knn_embe():
         X = model.encode(textos, show_progress_bar=True)
 
         n_grupos = 10
-        print(f"Aplicando K-Means com {n_grupos} clusters...")
+        print(f"Aplicando K-Means com {n_grupos} grupos...")
         kmeans = KMeans(n_clusters=n_grupos, random_state=42, n_init=10)
         kmeans.fit(X)
 
@@ -186,18 +184,18 @@ def knn_embe():
             'video_id': video_ids,
             'grupo': kmeans.labels_
         })
-        resultado.to_csv('clusters_embeddings.csv', index=False)
-        print("CSV de clusters gerado: 'clusters_embeddings.csv'.")
+        resultado.to_csv('agrupamento_embeddings.csv', index=False)
+        print("CSV de grupos gerado: 'agrupamento_embeddings.csv'.")
 
         # Visualização PCA
         reduzir_matriz = PCA(n_components=2)
         X_reduced = reduzir_matriz.fit_transform(X)
         plt.figure(figsize=(10, 8))
         plt.scatter(X_reduced[:, 0], X_reduced[:, 1], c=kmeans.labels_, cmap='tab10', s=50, alpha=0.7)
-        plt.title(f"Clusters de Vídeos (K-Means) - Embeddings")
+        plt.title(f"Agrupamento de Vídeos (K-Means) - Embeddings")
         plt.xlabel("Componente Principal 1")
         plt.ylabel("Componente Principal 2")
-        plt.colorbar(label='Cluster')
+        plt.colorbar(label='Grupos')
         plt.grid(True, linestyle='--', alpha=0.6)
         plt.tight_layout()
         plt.show()
@@ -241,9 +239,8 @@ def obter_titulos_videos():
             url = f'https://www.youtube.com/watch?v={video_id}'
             try:
                 driver.get(url)
-                time.sleep(3)  # Espera para garantir que o título carregue
+                time.sleep(3)
                 title = driver.execute_script("return document.title")
-                # Limpa o título (remove " - YouTube")
                 if title.endswith(" - YouTube"):
                     title = title[:-len(" - YouTube")]
                 titulos_coletados.append({'video_id': video_id, 'title': title})
@@ -251,7 +248,7 @@ def obter_titulos_videos():
                 print(f"[✔] {i+1}/{len(video_ids_to_fetch)}: {video_id} -> {title}")
             except Exception as e:
                 print(f"[✗] Erro ao obter título para {video_id}: {e}")
-                titulos_coletados.append({'video_id': video_id, 'title': 'N/A'}) # Marca como não disponível
+                titulos_coletados.append({'video_id': video_id, 'title': 'N/A'}) 
                 writer.writerow([video_id, 'N/A'])
     driver.quit()
     print("Coleta de títulos concluída. Salvo em 'titulos_youtube.csv'.")
@@ -266,10 +263,10 @@ def analisar_grupos(metodo):
     """
     try:
         if metodo == 'bow':
-            df_clusters_path = 'clusters_bow.csv'
+            df_clusters_path = 'agrupamento_bow.csv'
             print("\n--- Análise dos Grupos (Bag of Words) ---")
         elif metodo == 'embeddings':
-            df_clusters_path = 'clusters_embeddings.csv'
+            df_clusters_path = 'agrupamento_embeddings.csv'
             print("\n--- Análise dos Grupos (Embeddings) ---")
         else:
             print("Método inválido. Escolha 'bow' ou 'embeddings'.")
@@ -281,7 +278,6 @@ def analisar_grupos(metodo):
             print("Os títulos dos vídeos não foram carregados. Por favor, execute a opção 2 (Obter Títulos dos Vídeos) primeiro.")
             return
 
-        # Mescla os dados de clusters com os títulos dos vídeos
         df_merged = pd.merge(df_clusters, df_titulos, on='video_id', how='left')
 
         for grupo_id in sorted(df_merged['grupo'].unique()):
@@ -296,17 +292,17 @@ def analisar_grupos(metodo):
             label = input(f"Sugerir um rótulo para o Grupo {grupo_id} (ex: Tecnologia, Esportes, etc. Pressione Enter para pular): ")
             if label:
                 print(f"  Rótulo Sugerido para o Grupo {grupo_id}: {label}")
-                # Se quiser salvar os rótulos sugeridos no futuro, armazene-os em um dicionário aqui.
+    
 
         print("\n--- Análise de Grupos Concluída ---")
 
-        # Salva os dados mesclados (video_id, title, grupo) no CSV
+
         resultado = df_merged[['video_id', 'title', 'grupo']]
         resultado.to_csv('titulo_grupos.csv', index=False)
-        print("CSV de clusters gerado: 'titulo_grupos.csv'.")
+        print("CSV de videos por grupos gerado: 'titulo_grupos.csv'.")
 
     except FileNotFoundError:
-        print(f"Erro: O arquivo de clusters para '{metodo}' não foi encontrado. Por favor, execute a opção de agrupamento (5 ou 6) primeiro.")
+        print(f"Erro: O arquivo de grupos para '{metodo}' não foi encontrado. Por favor, execute a opção de agrupamento (5 ou 6) primeiro.")
     except Exception as e:
         print(f"Ocorreu um erro na análise dos grupos: {e}")
 
@@ -326,10 +322,10 @@ def menu():
         print("="*30)
         print("1 - Coletar Transcrições de Vídeos (cria 'transcricoes.csv')")
         print("2 - Obter Títulos de Vídeos (cria 'titulos_youtube.csv')")
-        print("3 - (Info) Ver Shape da Matriz BoW")
-        print("4 - (Info) Ver Shape dos Embeddings")
-        print("5 - Aplicar K-Means e Agrupar com BoW (gera 'clusters_bow.csv' e gráfico PCA)")
-        print("6 - Aplicar K-Means e Agrupar com Embeddings (gera 'clusters_embeddings.csv' e gráfico PCA)")
+        print("3 - Análise utilizando a biblioteca CountVectorizer para o método BoW")
+        print("4 - Análise utilizando a biblioteca SentenceTransformer para o metódo Embeddings")
+        print("5 - Aplicar K-Means e Agrupar com BoW (gera 'agrupamento_bow.csv' e gráfico PCA)")
+        print("6 - Aplicar K-Means e Agrupar com Embeddings (gera 'agrupamento_embeddings.csv' e gráfico PCA)")
         print("7 - Analisar Grupos (BoW) e ver títulos")
         print("8 - Analisar Grupos (Embeddings) e ver títulos")
         print("0 - Sair")
